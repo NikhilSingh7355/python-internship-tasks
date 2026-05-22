@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+  <h1>All Students</h1>
+  <a href="/add" class="btn btn-primary">+ Add Student</a>
+</div>
+
+<form class="search-bar" method="GET" action="/">
+  <input type="text" name="q" placeholder="Search by name or ID..." value="{{ query }}">
+  <button type="submit" class="btn btn-gray">Search</button>
+  {% if query %}<a href="/" class="btn btn-gray">Clear</a>{% endif %}
+</form>
+
+{% if students %}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Name</th><th>Age</th><th>Grade</th><th>Course</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in students %}
+    <tr>
+      <td><span class="badge">#{{ s.id }}</span></td>
+      <td>{{ s.name }}</td>
+      <td>{{ s.age }}</td>
+      <td>{{ s.grade }}</td>
+      <td>{{ s.course }}</td>
+      <td style="display:flex; gap:8px;">
+        <a href="/edit/{{ s.id }}" class="btn btn-success" style="padding:6px 14px; font-size:13px;">Edit</a>
+        <a href="/delete/{{ s.id }}" class="btn btn-danger" style="padding:6px 14px; font-size:13px;"
+           onclick="return confirm('Delete {{ s.name }}?')">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty">No students found. <a href="/add" style="color:#38bdf8;">Add one!</a></div>
+{% endif %}
+{% endblock %}
